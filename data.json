@@ -1,0 +1,32 @@
+{
+    "accesorios": [
+        {
+            "id": 1,
+            "nombre": "Colchoneta",
+            "descripcion": "Esterilla de goma antideslizante para yoga.",
+            "precio": 20000,
+            "imagen": "img/alfombras.jpg"
+        },
+        {
+            "id": 2,
+            "nombre": "Bloque",
+            "descripcion": "Bloque de corcho para soporte en posturas.",
+            "precio": 15000,
+            "imagen": "img/promo.jpg"
+        },
+        {
+            "id": 3,
+            "nombre": "ColchonetaLila",
+            "descripcion": "Cinturón de algodón para estiramientos.",
+            "precio": 10000,
+            "imagen": "img/tapete.jpg"
+        },
+        {
+            "id": 4,
+            "nombre": "Pesa",
+            "descripcion": "Pesa de hierro para entrenamiento de fuerza.",
+            "precio": 25000,
+            "imagen": "img/pesa.jpg"
+        }
+    ]
+}
