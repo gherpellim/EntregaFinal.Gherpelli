@@ -1,6 +1,5 @@
 let comentarios = JSON.parse(localStorage.getItem('comentarios')) || [];
 
-
 function mostrarComentarios() {
     const divComentarios = document.getElementById('comentarios');
     divComentarios.innerHTML = '<h2>Comentarios:</h2>';
@@ -8,7 +7,6 @@ function mostrarComentarios() {
         divComentarios.innerHTML += `<p>${index + 1}. ${comentario}</p>`;
     });
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('agregarComentario').addEventListener('click', () => {
