@@ -3,7 +3,7 @@
         {
             "id": 1,
             "nombre": "Colchoneta",
-            "descripcion": "Esterilla de goma antideslizante para yoga.",
+            "descripcion": "Colchoneta comoda y flexible.",
             "precio": 20000,
             "imagen": "img/alfombras.jpg"
         },
@@ -17,7 +17,7 @@
         {
             "id": 3,
             "nombre": "ColchonetaLila",
-            "descripcion": "Cinturón de algodón para estiramientos.",
+            "descripcion": "Colchoneta comoda y flexible.",
             "precio": 10000,
             "imagen": "img/tapete.jpg"
         },

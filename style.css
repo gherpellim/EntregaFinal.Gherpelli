@@ -13,17 +13,40 @@ h1, h2 {
 }
 
 header {
-    background-image: url('./img/OIP.jpeg'); 
-    background-size: cover;
-    background-position: center;
+    position: relative;
     height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; 
+    background: linear-gradient(to bottom, rgba(40, 64, 82, 0.7), rgba(40, 64, 82, 0.7)),
+                url('./img/FONDO.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Capa oscura */
+    z-index: 1;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(40, 64, 82, 1) 100%);
 }
 
 .header-content {
+    position: relative;
+    z-index: 2; /* Coloca el contenido por encima de la capa oscura */
     background: rgba(0, 0, 0, 0.5); 
     padding: 20px;
     border-radius: 10px;
@@ -151,4 +174,51 @@ footer {
 
 .producto button:hover {
     background-color: #009688;
+}
+
+@media only screen and (max-width: 768px) {
+    body {
+      font-size: 14px;
+    }
+
+    .container {
+      width: 100%;
+      padding: 10px;
+    }
+
+    .header, .footer {
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    .producto {
+      width: 100%;
+      margin: 10px 0;
+    }
+  
+    #carrito {
+      width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    body {
+      font-size: 12px;
+    }
+
+    .producto {
+      width: 100%;
+      padding: 10px;
+    }
+
+    .header, .footer {
+      font-size: 10px;
+      padding: 5px;
+    }
+
+    #carrito {
+      padding: 10px;
+      font-size: 12px;
+    }
 }

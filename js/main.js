@@ -96,3 +96,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cargarAccesorios();
 });
+function mostrarCarrito() {
+    let divCarrito = document.getElementById("carrito");
+    divCarrito.classList.remove('hidden');
+    divCarrito.innerHTML = '<h2>Carrito:</h2>';
+
+    if (carrito.length === 0) {
+        divCarrito.innerHTML += '<p>El carrito está vacío.</p>';
+    } else {
+        carrito.forEach((producto) => {
+            divCarrito.innerHTML += `
+                <div class="producto">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" style="width: 100px; height: auto;" />
+                    <p>Nombre: ${producto.nombre}</p>
+                    <p>Descripción: ${producto.descripcion}</p>
+                    <p>Precio: $${producto.precio.toFixed(2)}</p>
+                </div>
+            `;
+        });
+
+        let total = calcularTotal().toFixed(2);
+        divCarrito.innerHTML += `
+            <p>Total: $${total}</p>
+            <button onclick="finalizarCompra()">Finalizar compra</button>
+        `;
+    }
+}
+
+function finalizarCompra() {
+    let total = calcularTotal().toFixed(2);
+    
+    
+    Swal.fire({
+        title: 'Compra finalizada',
+        text: `El total de tu compra es $${total}`,
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+    });
+}
