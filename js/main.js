@@ -6,7 +6,7 @@ class Accesorio {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = precio;
+        this.precio = parseFloat(precio); // Convertir el precio a número
         this.imagen = imagen;
     }
 }
@@ -66,10 +66,8 @@ function mostrarCarrito() {
                 </div>
             `;
         });
-
-        let total = calcularTotal().toFixed(2);
         divCarrito.innerHTML += `
-            <p>Total: $${total}</p>
+            <p>Total: $${calcularTotal().toFixed(2)}</p>
             <button onclick="finalizarCompra()">Finalizar compra</button>
         `;
     }
@@ -97,11 +95,47 @@ function calcularTotal() {
 
 function finalizarCompra() {
     let total = calcularTotal().toFixed(2);
+
     Swal.fire({
         title: 'Compra finalizada',
         text: `El total de tu compra es $${total}`,
         icon: 'success',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        willClose: () => {
+            // Mostrar el formulario para que el usuario ingrese sus datos
+            Swal.fire({
+                title: 'Ingresa tus datos para enviar la factura',
+                html: `
+                    <form id="facturaForm">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" class="swal2-input" placeholder="Nombre completo" required>
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" id="email" class="swal2-input" placeholder="Tu correo electrónico" required>
+                        <label for="direccion">Dirección:</label>
+                        <input type="text" id="direccion" class="swal2-input" placeholder="Dirección de envío" required>
+                    </form>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Enviar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const nombre = Swal.getPopup().querySelector('#nombre').value;
+                    const email = Swal.getPopup().querySelector('#email').value;
+                    const direccion = Swal.getPopup().querySelector('#direccion').value;
+                    if (!nombre || !email || !direccion) {
+                        Swal.showValidationMessage(`Por favor completa todos los campos.`);
+                    }
+                    return { nombre, email, direccion };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Aquí puedes agregar la lógica para enviar los datos del formulario
+                    // Por ejemplo, enviar los datos a un servidor
+                    console.log('Datos del formulario:', result.value);
+                    Swal.fire('¡Gracias!', 'Te enviaremos la factura a tu correo.', 'success');
+                }
+            });
+        }
     });
 }
 
