@@ -6,28 +6,33 @@ class Accesorio {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = parseFloat(precio); // Convertir el precio a número
+        this.precio = parseFloat(precio);
         this.imagen = imagen;
     }
 }
 
-function cargarAccesorios() {
-    fetch('data.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al cargar el JSON');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.accesorios) {
-                data.accesorios.forEach(item => {
-                    accesorios.push(new Accesorio(item.id, item.nombre, item.descripcion, item.precio, item.imagen));
-                });
-                mostrarAccesorios();
-            }
-        })
-        .catch(error => console.error('Error cargando accesorios:', error));
+async function cargarAccesorios() {
+    try {
+        mostrarIndicadorDeCarga();
+        const response = await fetch('data.json');
+        if (!response.ok) {
+            throw new Error('Error al cargar el JSON: ' + response.statusText);
+        }
+        const data = await response.json();
+        if (data.accesorios) {
+            data.accesorios.forEach(item => {
+                accesorios.push(new Accesorio(item.id, item.nombre, item.descripcion, item.precio, item.imagen));
+            });
+            mostrarAccesorios();
+        } else {
+            throw new Error('Datos de accesorios no encontrados en el JSON.');
+        }
+    } catch (error) {
+        console.error('Error cargando accesorios:', error);
+        mostrarMensajeDeError('Lo siento, no se pudieron cargar los accesorios. Por favor, inténtelo de nuevo más tarde.');
+    } finally {
+        ocultarIndicadorDeCarga();
+    }
 }
 
 function mostrarAccesorios() {
@@ -74,18 +79,25 @@ function mostrarCarrito() {
 }
 
 function agregarAlCarrito(id) {
-    const producto = accesorios.find(p => p.id === id);
-    if (producto) {
-        carrito.push(producto);
-        Toastify({
-            text: "Producto añadido al carrito",
-            duration: 1500,
-            gravity: "top",
-            position: "right",
-            style: {
-                background: "linear-gradient(to right, #00b09b, #96c93d)"
-            }
-        }).showToast();
+    try {
+        const producto = accesorios.find(p => p.id === id);
+        if (producto) {
+            carrito.push(producto);
+            Toastify({
+                text: "Producto añadido al carrito",
+                duration: 1500,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)"
+                }
+            }).showToast();
+        } else {
+            throw new Error('Producto no encontrado.');
+        }
+    } catch (error) {
+        console.error('Error al agregar al carrito:', error);
+        mostrarMensajeDeError('Hubo un problema al agregar el producto al carrito. Por favor, inténtelo de nuevo.');
     }
 }
 
@@ -102,7 +114,6 @@ function finalizarCompra() {
         icon: 'success',
         confirmButtonText: 'Aceptar',
         willClose: () => {
-            // Mostrar el formulario para que el usuario ingrese sus datos
             Swal.fire({
                 title: 'Ingresa tus datos para enviar la factura',
                 html: `
@@ -129,14 +140,34 @@ function finalizarCompra() {
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Aquí puedes agregar la lógica para enviar los datos del formulario
-                    // Por ejemplo, enviar los datos a un servidor
                     console.log('Datos del formulario:', result.value);
                     Swal.fire('¡Gracias!', 'Te enviaremos la factura a tu correo.', 'success');
                 }
             });
         }
     });
+}
+
+function mostrarMensajeDeError(mensaje) {
+    const mensajeElemento = document.getElementById('mensaje-error');
+    if (mensajeElemento) {
+        mensajeElemento.textContent = mensaje;
+        mensajeElemento.style.display = 'block';
+    }
+}
+
+function ocultarIndicadorDeCarga() {
+    const indicador = document.getElementById('indicador-carga');
+    if (indicador) {
+        indicador.style.display = 'none';
+    }
+}
+
+function mostrarIndicadorDeCarga() {
+    const indicador = document.getElementById('indicador-carga');
+    if (indicador) {
+        indicador.style.display = 'block';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
